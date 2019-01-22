@@ -46,7 +46,11 @@ def delete_post(request):
 
 
 def search(request):
-    return render(request, "search.html", {})
+    keyword = request.POST.get("keyword")
+    print(keyword)
+    posts = Post.objects.all().filter(content__contains=keyword)
+    print("-----------",posts)
+    return render(request, "search.html", {"posts" : posts})
 
 
 
