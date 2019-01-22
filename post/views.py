@@ -4,6 +4,10 @@ from post.models import Post
 # Create your views here.
 
 
+def post_list(request):
+    posts = Post.objects.all()
+    return render(request, "post_list.html", {"posts" : posts})
+
 def create_post(request):
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -36,7 +40,9 @@ def read_post(request):
     return render(request, "read_post.html", {"post" : post})
 
 def delete_post(request):
-    return render(request, "delete_post.html", {})
+    post_id = int(request.GET.get("post_id"))
+    Post.objects.get(id=post_id).delete()
+    return redirect("/")
 
 
 def search(request):
