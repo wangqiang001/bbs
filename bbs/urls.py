@@ -13,9 +13,11 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
+from django.conf import settings
 from django.conf.urls import url
+from django.conf.urls.static import static
 
-# from post.views import create_post, edit_post, read_post, delete_post, search
+# from bbs.settings import MEDIA_URL, MEDIA_ROOT
 from post import views as post_views
 from user import views as user_views
 
@@ -27,4 +29,12 @@ urlpatterns = [
     url(r"^post/read/", post_views.read_post),
     url(r"^post/delete/", post_views.delete_post),
     url(r"^post/search/", post_views.search),
+
+    url(r"^user/register/", user_views.register),
+    url(r"^user/login/", user_views.login),
+    url(r"^user/logout/", user_views.logout),
+    url(r"^user/user_info/", user_views.user_info),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
