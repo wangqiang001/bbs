@@ -67,6 +67,7 @@ def read_post(request):
 def delete_post(request):
     post_id = int(request.GET.get("post_id"))
     Post.objects.get(id=post_id).delete()
+    redis.zrem('ReadCounter', post_id) #同时从帖子阅读排行删除
     return redirect("/")
 
 
