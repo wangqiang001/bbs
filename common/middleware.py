@@ -24,9 +24,8 @@ class BlockMiddleware(MiddlewareMixin):
             return render(request, 'blockers.html')
 
         now = time.time()
-        #检查当前时间与前 3 次的时差是否小于 2 秒
-        request_time = cache.get(request_key, [0] * 3)
-        print('request_time', request_time)
+        #检查当前时间与前 10 次的时差是否小于 1 秒
+        request_time = cache.get(request_key, [0] * 10)
         if now - request_time[0] < 1:
             cache.set(block_key, 1, 60)  #加入黑名单
             return render(request, 'blockers.html')

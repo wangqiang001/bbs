@@ -25,9 +25,10 @@ def post_list(request):
 @login_required
 def create_post(request):
     if request.method == 'POST':
+        uid = request.session['uid']
         title = request.POST.get('title')
         content = request.POST.get('content')
-        post = Post.objects.create(title=title, content=content)
+        post = Post.objects.create(uid=uid, title=title, content=content)
         return redirect("/post/read/?post_id=%d" % post.id)
     else:
         return render(request, 'create_post.html', {})
