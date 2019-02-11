@@ -7,7 +7,7 @@ from common import redis
 from post.helper import page_cache, get_top_n
 from post.models import Post
 # Create your views here.
-
+from user.helper import login_required
 
 
 @page_cache(60*2)
@@ -21,6 +21,8 @@ def post_list(request):
     posts = Post.objects.all()[start : end]
     return render(request, "post_list.html", {"posts": posts, "pages": range(pages)})
 
+
+@login_required
 def create_post(request):
     if request.method == 'POST':
         title = request.POST.get('title')

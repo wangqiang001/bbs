@@ -1,4 +1,5 @@
 from django.core.cache import cache
+from django.shortcuts import redirect
 
 from common import redis
 from post.models import Post
@@ -47,4 +48,5 @@ def get_top_n(num):
         post_id = item[0]
         item[0] = posts[post_id]
     return cleaned_data
+
 
