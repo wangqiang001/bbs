@@ -69,6 +69,15 @@ WSGI_APPLICATION = 'bbs.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
+
+#Redis配置
+REDIS = {
+    'host': 'localhost',
+    'port': 6379,
+    'db' : 7,
+}
+
+
 #django默认缓存配置
 CACHES = {
     "default": {
@@ -133,3 +142,26 @@ STATICFILES_DIRS = [
 
 MEDIA_ROOT = 'medias'
 MEDIA_URL = '/medias/'
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console':{
+            'level':'DEBUG',
+            'class':'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['console'],
+            'propagate': True,
+            'level':'DEBUG',
+        },
+    }
+}
+
+
+
+

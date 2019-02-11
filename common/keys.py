@@ -1,0 +1,2 @@
+
+MODEL_KEY = "REDIS_MODEL_KEY-%s-%d"
