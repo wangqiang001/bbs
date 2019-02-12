@@ -7,7 +7,7 @@ from common import redis
 from post.helper import page_cache, get_top_n
 from post.models import Post, Comment, Tag
 # Create your views here.
-from user.helper import login_required
+from user.helper import login_required, need_prem
 
 
 @page_cache(60*2)
@@ -23,6 +23,7 @@ def post_list(request):
 
 
 @login_required
+@need_prem('manager')
 def create_post(request):
     if request.method == 'POST':
         uid = request.session['uid']
