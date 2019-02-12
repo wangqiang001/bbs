@@ -5,7 +5,7 @@ from django.shortcuts import render,redirect
 
 from common import redis
 from post.helper import page_cache, get_top_n
-from post.models import Post
+from post.models import Post, Comment
 # Create your views here.
 from user.helper import login_required
 
@@ -64,7 +64,8 @@ def read_post(request):
     #     cache.set(key, post)
     #     print('从数据库获取',post)
     # post = Post.objects.get(id=post_id)
-    post = Post.get(id=post_id)     #ORM级别的缓存
+    # post = Post.get(id=post_id)     #ORM级别的缓存
+    post = Post.objects.get(id=post_id)
     return render(request, "read_post.html", {"post" : post})
 
 def delete_post(request):
@@ -85,4 +86,12 @@ def search(request):
 def top10(request):
     rank_data = get_top_n(10)
     return render(request, 'top10.html', {'rank_data': rank_data})
+
+@login_required
+def comment(request):
+    uid = request.session['uid']
+    post_id = request.POST.get('post_id')
+    content = request.POST.get('content')
+    Comment.objects.create(uid=uid, post_id=post_id, content=content)
+    return  redirect('/post/read/?post_id=%s' % post_id)
 

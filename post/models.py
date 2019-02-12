@@ -24,7 +24,27 @@ class Post(models.Model):
             self._auth = User.objects.get(pk=self.uid)
         return self._auth
 
+    @property
+    def comments(self):
+        return Comment.objects.filter(post_id=self.id)
 
+class Comment(models.Model):
+    uid = models.IntegerField()
+    post_id = models.IntegerField()
+    created = models.DateTimeField(auto_now_add=True)
+    content = models.TextField()
 
+    class Meta:
+        ordering = ['-created']
 
+    @property
+    def auth(self):
+        if not hasattr(self, '_auth'):
+            self._auth = User.objects.get(pk=self.uid)
+        return self._auth
 
+    @property
+    def post(self):
+        if not hasattr(self, '_auth'):
+            self._post = Post.objects.get(pk=self.uid)
+        return self._post
