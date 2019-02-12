@@ -5,7 +5,7 @@ from django.shortcuts import render,redirect
 
 from common import redis
 from post.helper import page_cache, get_top_n
-from post.models import Post, Comment
+from post.models import Post, Comment, Tag
 # Create your views here.
 from user.helper import login_required
 
@@ -43,14 +43,21 @@ def edit_post(request):
         post.title = title
         post.content = content
         post.save()
-        #更新帖子缓存
+
+        #创建tag
+        str_tags = request.POST.get('tags')
+        tag_names = [t.strip() for t in str_tags.title().replace('，', ',').split(',')]
+        post.update_tags(tag_names)
+
+        # 更新帖子缓存
         # key = "Post-%s" % post_id
         # post = cache.set(key)
         return redirect("/post/read/?post_id=%d" % post.id)
     else:
         post_id = int(request.GET.get("post_id"))
         post = Post.objects.get(id=post_id)
-        return render(request, "edit_post.html", {"post" : post})
+        tags = ','.join([t.name for t in post.tags])
+        return render(request, "edit_post.html", {"post" : post, "tags": tags})
 
 
 def read_post(request):
