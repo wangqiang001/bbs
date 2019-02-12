@@ -7,7 +7,7 @@ from common import redis
 from post.helper import page_cache, get_top_n
 from post.models import Post, Comment, Tag
 # Create your views here.
-from user.helper import login_required, need_prem
+from user.helper import login_required, need_prem, need_prem_func
 
 
 @page_cache(60*2)
@@ -103,3 +103,10 @@ def comment(request):
     Comment.objects.create(uid=uid, post_id=post_id, content=content)
     return  redirect('/post/read/?post_id=%s' % post_id)
 
+
+# @need_prem_func('del_comment')
+def del_comment(request):
+    post_id = int(request.GET.get('post_id'))
+    comment_id = int(request.GET.get('comment_id'))
+    Comment.objects.get(pk=comment_id).delete()
+    return redirect('/post/read/?psot_id=%s' % post_id)
